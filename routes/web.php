@@ -1,8 +1,8 @@
 <?php
 
+use Ajax\JwtRedis\Facades\JwtRedis;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Route;
-use Ajax\JwtRedis\Facades\JwtRedis;
 
 /*
 |--------------------------------------------------------------------------

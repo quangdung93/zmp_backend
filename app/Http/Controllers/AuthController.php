@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Ajax\JwtRedis\Facades\JwtRedis;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -37,6 +38,15 @@ class AuthController extends Controller
         if (! $token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
+
+        $payload = Auth::payload();
+        $params = [
+            $payload->get('imei'), 
+            $payload->get('user_id')
+        ];
+
+        // Save token to redis
+        JwtRedis::save($token, $params);
 
         return $this->createNewToken($token);
     }
