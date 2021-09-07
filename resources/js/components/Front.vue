@@ -5,7 +5,7 @@
                 <h1 class="mt-4">Filters</h1>
 
                 <h3 class="mt-2">Price</h3>
-                <div class="form-check" v-for="(price, index) in prices">
+                <div class="form-check" v-for="(price, index) in prices" :key="price">
                     <input class="form-check-input" type="checkbox" :value="index" :id="'price'+index" v-model="selected.prices">
                     <label class="form-check-label" :for="'price' + index">
                         {{ price.name }} ({{ price.products_count }})
@@ -13,7 +13,7 @@
                 </div>
 
                 <h3 class="mt-2">Categories</h3>
-                <div class="form-check" v-for="(category, index) in categories">
+                <div class="form-check" v-for='(category, index) in categories' :key="category.id">
                     <input class="form-check-input" type="checkbox" :value="category.id" :id="'category'+index" v-model="selected.categories">
                     <label class="form-check-label" :for="'category' + index">
                         {{ category.name }} ({{ category.products_count }})
@@ -21,7 +21,7 @@
                 </div>
 
                 <h3 class="mt-2">Manufacturers</h3>
-                <div class="form-check" v-for="(manufacturer, index) in manufacturers">
+                <div class="form-check" v-for="(manufacturer, index) in manufacturers" :key="manufacturer.id">
                     <input class="form-check-input" type="checkbox" :value="manufacturer.id" :id="'manufacturer'+index" v-model="selected.manufacturers">
                     <label class="form-check-label" :for="'manufacturer' + index">
                         {{ manufacturer.name }} ({{ manufacturer.products_count }})
@@ -30,7 +30,7 @@
             </div>
             <div class="col-lg-9">
                 <div class="row mt-4">
-                    <div class="col-lg-4 col-md-6 mb-4" v-for="product in products">
+                    <div class="col-lg-4 col-md-6 mb-4" v-for="product in products" :key="product.id">
                         <div class="card h-100">
                             <a href="#">
                                 <img class="card-img-top" src="http://placehold.it/700x400" alt="">
