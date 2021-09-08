@@ -14,7 +14,7 @@ return [
     |--------------------------------------------------------------------------
     | Key Hash
     |--------------------------------------------------------------------------
-    | Hashed by algorithm to identify session
+    | The keys in the payload are used to hash session_id
     |
     */
     'key_payload_hash' => [

@@ -46,7 +46,7 @@ class AuthController extends Controller
         ];
 
         // Save token to redis
-        JwtRedis::save($token, $params);
+        JwtRedis::set($token, $params);
 
         return $this->createNewToken($token);
     }

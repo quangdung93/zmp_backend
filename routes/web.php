@@ -25,7 +25,7 @@ Route::get('/', function(){
         '123456' //user_id
     ]; 
 
-    $redis = JwtRedis::getToken($params);
+    $redis = JwtRedis::get($params);
 
     dd($redis);
 });

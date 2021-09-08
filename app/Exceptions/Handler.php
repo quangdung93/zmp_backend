@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Ajax\JwtRedis\Exceptions\JwtRedisException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -50,6 +51,10 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        if($exception instanceof JwtRedisException){
+            dd($exception->getCode());
+        }
+
         return parent::render($request, $exception);
     }
 }
