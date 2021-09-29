@@ -18,6 +18,18 @@ class ProductResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
+            'image' => $this->image,
+            'sizes' => [
+                [
+                    'name' => 'Camera trong nhà',
+                    'extra' => 150000
+                ],
+                [
+                    'name' => 'Camera ngoài trời',
+                    'extra' => 170000
+                ]
+            ],
+            'toppings' => ['yes', 'no'],
             'price' => number_format($this->price / 100, 2)
         ];
     }

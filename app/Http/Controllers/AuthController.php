@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\User;
+// use Ajax\JwtRedis\Facades\JwtRedis;
 use Illuminate\Http\Request;
-use Ajax\JwtRedis\Facades\JwtRedis;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -46,7 +46,7 @@ class AuthController extends Controller
         ];
 
         // Save token to redis
-        JwtRedis::set($token, $params);
+        // JwtRedis::set($token, $params);
 
         return $this->createNewToken($token);
     }
@@ -105,7 +105,7 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function userProfile() {
-        return response()->json(auth()->user());
+        return response()->json(['data' => auth()->user()]);
     }
 
     /**

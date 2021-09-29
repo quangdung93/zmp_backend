@@ -30,7 +30,7 @@ return [
     |
     */
     'route_except' => [
-        'api/login'
+        'api/login',
     ],
 
     /*

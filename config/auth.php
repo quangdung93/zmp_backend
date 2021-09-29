@@ -46,6 +46,12 @@ return [
             'provider' => 'users',
             'hash' => false,
         ],
+
+        'zalo' => [
+            'driver' => 'jwt',
+            'provider' => 'zalo_users',
+            'hash' => false,
+        ],
     ],
 
     /*
@@ -71,10 +77,10 @@ return [
             'model' => App\User::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'zalo_users' => [
+            'driver' => 'eloquent',
+            'model' => App\ZaloUser::class,
+        ],
     ],
 
     /*
