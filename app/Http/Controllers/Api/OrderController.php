@@ -7,6 +7,8 @@ use App\Order;
 use App\ZaloUser;
 use Illuminate\Http\Request;
 
+use function PHPSTORM_META\map;
+
 class OrderController extends Controller
 {
     public function checkout(Request $request){
@@ -22,28 +24,31 @@ class OrderController extends Controller
                 'shop' => @$request->shop['name'] ?? null,
                 'user_id' => $request->user['id']
             ];
-    
-            $order = Order::create($dataOrder);
+            $total = 0;
             $carts = $request->cart;
+            
+            $total = collect($carts)->reduce(function ($total, $item) {
+                return $total + $item['subtotal'];
+            });
+
+            $dataOrder['total'] = $total;
+
+            $order = Order::create($dataOrder);
+            
             if($order && $carts){
                 $dataCart = [];
-                $total = 0;
                 foreach($carts as $cart){
-                    $subtotal = str_replace('.', '', $cart['subtotal']);
                     $dataCart[] = [
                         'product_id' => $cart['product']['id'],
                         'price' => $cart['product']['price'],
                         'quantity' => $cart['quantity'],
-                        'subtotal' => $subtotal,
+                        'subtotal' => $cart['subtotal'],
                         'options' => $cart['size']['name'],
                         'note' => $cart['note'],
                     ];
-                    $total += $subtotal;
                 }
     
                 $order->cart()->attach($dataCart);
-                $order->total = $total;
-                $order->save();
 
                 return response()->json([
                     'error' => 0,
