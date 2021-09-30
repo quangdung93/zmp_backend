@@ -29,7 +29,7 @@ class OrderController extends Controller
                 $dataCart = [];
                 $total = 0;
                 foreach($carts as $cart){
-                    $subtotal = str_replace('.', '', $$cart['subtotal']);
+                    $subtotal = str_replace('.', '', $cart['subtotal']);
                     $dataCart[] = [
                         'product_id' => $cart['product']['id'],
                         'price' => $cart['product']['price'],
