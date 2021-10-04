@@ -30,7 +30,7 @@ class ProductResource extends JsonResource
                 ]
             ],
             'toppings' => ['yes', 'no'],
-            'price' => number_format($this->price / 100, 2)
+            'price' => $this->price
         ];
     }
 }
