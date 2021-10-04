@@ -21,10 +21,12 @@ class ProductResource extends JsonResource
             'image' => $this->image,
             'sizes' => [
                 [
+                    'id' => 1,
                     'name' => 'Camera trong nhà',
                     'extra' => 150000
                 ],
                 [
+                    'id' => 2,
                     'name' => 'Camera ngoài trời',
                     'extra' => 170000
                 ]
