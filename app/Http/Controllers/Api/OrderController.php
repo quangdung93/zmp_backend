@@ -56,8 +56,8 @@ class OrderController extends Controller
     
                 $order->cart()->attach($dataCart);
                 //send message Zalo
-                $message = 'Cảm ơn bạn đã sử dụng dịch vụ của FPT Telecom. Chi tiết đơn hàng: '.$messageDetail.'. Tổng đơn hàng: ' .number_format($total). ' đ';
-                $this->zaloService->sendMessage($request->user['id'], $message);
+                // $message = 'Cảm ơn bạn đã sử dụng dịch vụ của FPT Telecom. Chi tiết đơn hàng: '.$messageDetail.'. Tổng đơn hàng: ' .number_format($total). ' đ';
+                // $this->zaloService->sendMessage($request->user['id'], $message);
 
                 return response()->json([
                     'error' => 0,
