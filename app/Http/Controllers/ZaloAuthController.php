@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\ZaloService;
 use App\ZaloUser;
 use Illuminate\Http\Request;
+use App\Services\ZaloService;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Log;
 use Tymon\JWTAuth\Facades\JWTFactory;
 
 class ZaloAuthController extends Controller
@@ -56,6 +57,7 @@ class ZaloAuthController extends Controller
 
     public function webhook(Request $request){
         $payload = $request->body;
+        Log::info($payload);
         switch ($payload['event_name']) {
             case 'follow':
                 $this->processFollowEvent($payload);
