@@ -23,19 +23,18 @@ class ZaloService
     public function sendMessage($user_id, $message){
         $client = new Client();
         $response = $client->post('https://openapi.zalo.me/v2.0/oa/message', [
-            'form_params' => [
+            'json' => [
                 'recipient' => [
                     'user_id' => $user_id,
                 ],
                 'message' => [
                     'text' => $message
                 ]
-            ],[
+            ],
+            'headers' => [
                 'Content-Type' => 'application/json',
                 'access_token' => env('OA_TOKEN')
             ]
         ]);
-
-        $dataResponse = json_decode($response->getBody(), true);
     }
 }

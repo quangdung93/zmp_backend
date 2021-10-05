@@ -41,6 +41,7 @@ class OrderController extends Controller
             
             if($order && $carts){
                 $dataCart = [];
+                $messageDetail = '';
                 foreach($carts as $cart){
                     $dataCart[] = [
                         'product_id' => $cart['product']['id'],
@@ -50,11 +51,12 @@ class OrderController extends Controller
                         'options' => $cart['size']['name'],
                         'note' => $cart['note'],
                     ];
+                    $messageDetail .= $cart['product']['name'] .', giá:'.number_format($cart['product']['price']).' đ, số lượng:'. $cart['quantity'] .'/';
                 }
     
                 $order->cart()->attach($dataCart);
                 //send message Zalo
-                $message = 'Cảm ơn bạn đã sử dụng dịch vụ của FPT Telecom. Tổng đơn hàng: ' .number_format($total);
+                $message = 'Cảm ơn bạn đã sử dụng dịch vụ của FPT Telecom. Chi tiết đơn hàng: '.$messageDetail.'. Tổng đơn hàng: ' .number_format($total). ' đ';
                 $this->zaloService->sendMessage($request->user['id'], $message);
 
                 return response()->json([
