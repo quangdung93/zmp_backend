@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ZaloService;
 use App\ZaloUser;
-use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Facades\JWTFactory;
-use Illuminate\Support\Facades\Config;
 
 class ZaloAuthController extends Controller
 {
-    public function __construct() {
+    protected $zaloService;
 
+    public function __construct(ZaloService $zaloService) {
+        $this->zaloService = $zaloService;
     }
 
     public function loginZalo(Request $request){
@@ -24,7 +25,7 @@ class ZaloAuthController extends Controller
             ]);
 		}
 
-        $profileZalo = $this->getZaloProfile($accessToken);
+        $profileZalo = $this->zaloService->getZaloProfile($accessToken);
         if($profileZalo){
             $dataZalo = [
                 'name' => $profileZalo['name'],
@@ -45,20 +46,6 @@ class ZaloAuthController extends Controller
         }
     }
 
-    public function getZaloProfile($accessToken){
-        $client = new Client();
-        $response = $client->get('https://graph.zalo.me/v2.0/me', [
-            'query' => [
-                'access_token'  => $accessToken,
-                'fields' => 'id,name,birthday,email,picture'
-            ]
-        ]);
-
-        $dataResponse = json_decode($response->getBody(), true);
-
-        return $dataResponse;
-    }
-
     public function userProfile() {
         return response()->json([
             'error' => 0,
@@ -66,4 +53,33 @@ class ZaloAuthController extends Controller
             'data' => request()->get('user')
         ]);
     }
+
+    public function webhook(Request $request){
+        $payload = $request->body;
+        switch ($payload['event_name']) {
+            case 'follow':
+                $this->processFollowEvent($payload);
+                break;
+
+            case 'unfollow':
+                $this->processUnfollowEvent($payload);
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    private function processFollowEvent($payload){
+        $followerId = $payload['follower']['id'];
+        $user_id_by_app = $payload['user_id_by_app'];
+        ZaloUser::where('id', $user_id_by_app)->update(['follow_id' => $followerId, 'is_follow' => 1]);
+    }
+
+    private function processUnfollowEvent($payload){
+        $followerId = $payload['follower']['id'];
+        $user_id_by_app = $payload['user_id_by_app'];
+        ZaloUser::where('id', $user_id_by_app)->update(['follow_id' => $followerId, 'is_follow' => 0                   ]);
+    }
+
 }

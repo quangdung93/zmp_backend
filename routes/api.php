@@ -19,6 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('/login_zalo', 'ZaloAuthController@loginZalo');
+Route::post('/webhook', 'ZaloAuthController@webhook');
 
 Route::group([
     'middleware' => 'zalo.auth',

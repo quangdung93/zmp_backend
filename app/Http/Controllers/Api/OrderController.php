@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use App\Order;
-use App\ZaloUser;
 use Illuminate\Http\Request;
-
-use function PHPSTORM_META\map;
+use App\Services\ZaloService;
+use App\Http\Controllers\Controller;
 
 class OrderController extends Controller
 {
+    protected $zaloService;
+
+    public function __construct(ZaloService $zaloService) {
+        $this->zaloService = $zaloService;
+    }
+
     public function checkout(Request $request){
         // try {
             $dataOrder = [
@@ -49,6 +53,9 @@ class OrderController extends Controller
                 }
     
                 $order->cart()->attach($dataCart);
+                //send message Zalo
+                $message = 'Cảm ơn bạn đã sử dụng dịch vụ của FPT Telecom. Tổng đơn hàng: ' .number_format($total);
+                $this->zaloService->sendMessage($request->user['follow_id'], $message);
 
                 return response()->json([
                     'error' => 0,
