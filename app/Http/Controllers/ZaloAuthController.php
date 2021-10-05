@@ -56,8 +56,7 @@ class ZaloAuthController extends Controller
     }
 
     public function webhook(Request $request){
-        $payload = $request->body;
-        Log::info($payload);
+        $payload = $request->all();
         switch ($payload['event_name']) {
             case 'follow':
                 $this->processFollowEvent($payload);
